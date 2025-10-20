@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tasks/todo_page.dart';
 
 //일단 만듬
 class ToDoEntity {
@@ -13,7 +14,6 @@ class ToDoEntity {
 class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
-  
 }
 
 class _HomePageState extends State<HomePage> {
@@ -23,7 +23,8 @@ class _HomePageState extends State<HomePage> {
   bool showDescription = false; // 설명 입력창 보일지 여부
   bool isFavorite = false; // 즐겨찾기 상태
 
-  
+  // 작성한거 리스트로 받아놓기
+  List<ToDoEntity> todolist = [];
 
   //할일 쓰고 세이브 함수
   void saveToDo() {
@@ -33,6 +34,11 @@ class _HomePageState extends State<HomePage> {
     if (title.isEmpty) return;
 
     final todo = ToDoEntity(title, desc, false, isFavorite);
+
+    //목록에 추가하기
+    setState(() {
+      todolist.add(todo);
+    });
     print(
       " 저장됨: ${todo.title}, 설명: ${todo.description}, 즐겨찾기: ${todo.isFavorite}",
     );
@@ -85,6 +91,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
