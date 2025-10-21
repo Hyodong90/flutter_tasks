@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tasks/todo_detail_page.dart';
 import 'package:flutter_tasks/todo_view.dart';
 
 //일단 만듬
@@ -227,63 +228,71 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Container todoItem(ToDoEntity todo) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      height: 50,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-
-        children: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                int index = todolist.indexOf(todo);
-                todolist[index] = ToDoEntity(
-                  todo.title,
-                  todo.description,
-                  !todo.isDone,
-                  todo.isFavorite,
-                );
-              });
-            },
-            icon: todo.isDone
-                ? Icon(Icons.check_circle_rounded)
-                : Icon(Icons.circle_outlined),
-          ),
-          SizedBox(width: 12),
-
-          Text(
-            todo.title,
-            style: TextStyle(
-              decoration: todo.isDone
-                  ? TextDecoration.lineThrough
-                  : TextDecoration.none,
+  Widget todoItem(ToDoEntity todo) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => TodoDetailPage(todo: todo)),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        height: 50,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.white),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  int index = todolist.indexOf(todo);
+                  todolist[index] = ToDoEntity(
+                    todo.title,
+                    todo.description,
+                    !todo.isDone,
+                    todo.isFavorite,
+                  );
+                });
+              },
+              icon: todo.isDone
+                  ? Icon(Icons.check_circle_rounded)
+                  : Icon(Icons.circle_outlined),
             ),
-          ),
-          Spacer(),
-          IconButton(
-            onPressed: () {
-              setState(() {
-                int index = todolist.indexOf(todo);
-                todolist[index] = ToDoEntity(
-                  todo.title,
-                  todo.description,
-                  todo.isDone,
-                  !todo.isFavorite,
-                );
-              });
-            },
-            icon: todo.isFavorite ? Icon(Icons.star) : Icon(Icons.star_border),
-          ),
-        ],
+            SizedBox(width: 12),
+            Text(
+              todo.title,
+              style: TextStyle(
+                decoration: todo.isDone
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none,
+              ),
+            ),
+            Spacer(),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  int index = todolist.indexOf(todo);
+                  todolist[index] = ToDoEntity(
+                    todo.title,
+                    todo.description,
+                    todo.isDone,
+                    !todo.isFavorite,
+                  );
+                });
+              },
+              icon: todo.isFavorite
+                  ? Icon(Icons.star)
+                  : Icon(Icons.star_border),
+            ),
+          ],
+        ),
       ),
     );
   }
