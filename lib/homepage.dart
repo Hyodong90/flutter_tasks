@@ -52,6 +52,12 @@ class _HomePageState extends State<HomePage> {
     Navigator.pop(context); // 창 닫기
   }
 
+  // onToggleFavorite(ToDoEntity todo) {
+  //   todolist.indexOf();
+  // }
+
+  // onToggleDone() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,39 +71,50 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Container(
-          height: 230,
-          width: double.infinity,
+        child:
+            //삼항연산자로 투두리스트 채워졌을때 다른화면 보이게
+            todolist.isEmpty
+            ? Container(
+                height: 230,
+                width: double.infinity,
 
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            children: [
-              SizedBox(height: 12),
-              Image.asset('assets/1.webp', width: 100, height: 100),
-              SizedBox(height: 12),
-              Text(
-                "아직 할 일이 없음",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(height: 12),
+                    Image.asset('assets/1.webp', width: 100, height: 100),
+                    SizedBox(height: 12),
+                    Text(
+                      "아직 할 일이 없음",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      "할 일을 추가하고 Title 에서 \n 할 일을 추적하세요.",
+                      style: TextStyle(fontSize: 14, height: 1.5),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              )
+            : ListView.builder(
+                itemCount: todolist.length,
+                itemBuilder: (context, index) {
+                  return todoItem(todolist[index]);
+                },
               ),
-              SizedBox(height: 12),
-              Text(
-                "할 일을 추가하고 Title 에서 \n 할 일을 추적하세요.",
-                style: TextStyle(fontSize: 14, height: 1.5),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
       ),
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
             context: context,
-            isScrollControlled: true,
             builder: (context) {
               return StatefulBuilder(
                 builder: (context, setModalState) {
@@ -131,6 +148,7 @@ class _HomePageState extends State<HomePage> {
 
                         Row(
                           children: [
+                            // if를 써야 한번은 실행됨. 세부사항이 트루일때
                             if (!showDescription)
                               IconButton(
                                 icon: Icon(
@@ -178,12 +196,10 @@ class _HomePageState extends State<HomePage> {
 
                         //  설명 입력창
                         if (showDescription)
-                          // 세부정보추가 줄바꿈하려 익스펜디드로 감쌌는데 전체화면됨. 컨터이너로 감싸줘야하나/ 엔터눌러도 다음으로 그냥 키보드창이내려감,
-                          SizedBox(
-                            height: 200,
+                          Expanded(
                             child: TextField(
-                              textInputAction: TextInputAction
-                                  .newline, // 엔터치면 다음줄로 가야하는데 왜ㅏㄴ가지
+                              maxLines: null, //맥스라인을 널 하니 엔터로 다음 줄 가짐.
+                              keyboardType: TextInputType.multiline,
                               controller: descController,
                               style: TextStyle(fontSize: 14),
                               decoration: InputDecoration(
@@ -207,6 +223,67 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.red,
         shape: CircleBorder(),
         child: Icon(Icons.add, color: Colors.white, size: 24),
+      ),
+    );
+  }
+
+  Container todoItem(ToDoEntity todo) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      height: 50,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+
+        children: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                int index = todolist.indexOf(todo);
+                todolist[index] = ToDoEntity(
+                  todo.title,
+                  todo.description,
+                  !todo.isDone,
+                  todo.isFavorite,
+                );
+              });
+            },
+            icon: todo.isDone
+                ? Icon(Icons.check_circle_rounded)
+                : Icon(Icons.circle_outlined),
+          ),
+          SizedBox(width: 12),
+
+          Text(
+            todo.title,
+            style: TextStyle(
+              decoration: todo.isDone
+                  ? TextDecoration.lineThrough
+                  : TextDecoration.none,
+            ),
+          ),
+          Spacer(),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                int index = todolist.indexOf(todo);
+                todolist[index] = ToDoEntity(
+                  todo.title,
+                  todo.description,
+                  todo.isDone,
+                  !todo.isFavorite,
+                );
+              });
+            },
+            icon: todo.isFavorite ? Icon(Icons.star) : Icon(Icons.star_border),
+          ),
+        ],
       ),
     );
   }
