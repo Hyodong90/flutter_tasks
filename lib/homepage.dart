@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tasks/todo_page.dart';
+import 'package:flutter_tasks/todo_view.dart';
 
 //일단 만듬
 class ToDoEntity {
@@ -55,6 +55,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey[400],
       appBar: AppBar(
         title: Text(
@@ -105,7 +106,7 @@ class _HomePageState extends State<HomePage> {
                       top: 12,
                       left: 20,
                       right: 20,
-                      bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+                      bottom: MediaQuery.of(context).viewInsets.bottom,
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -121,6 +122,7 @@ class _HomePageState extends State<HomePage> {
                             if (value.trim().isNotEmpty) saveToDo();
                           },
                           autofocus: true,
+                          textInputAction: TextInputAction.done, //엔터 누를시 저장
                           decoration: InputDecoration(
                             hintText: "새 할 일",
                             border: InputBorder.none,
@@ -129,19 +131,20 @@ class _HomePageState extends State<HomePage> {
 
                         Row(
                           children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.short_text_rounded,
-                                color: showDescription
-                                    ? Colors.black
-                                    : Colors.grey,
+                            if (!showDescription)
+                              IconButton(
+                                icon: Icon(
+                                  Icons.short_text_rounded,
+                                  color: showDescription
+                                      ? Colors.black
+                                      : Colors.grey,
+                                ),
+                                onPressed: () {
+                                  setModalState(() {
+                                    showDescription = !showDescription;
+                                  });
+                                },
                               ),
-                              onPressed: () {
-                                setModalState(() {
-                                  showDescription = !showDescription;
-                                });
-                              },
-                            ),
                             IconButton(
                               icon: Icon(
                                 isFavorite ? Icons.star : Icons.star_border,
@@ -173,18 +176,24 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
 
-                        // 🔹 설명 입력창 (보일 때만)
+                        //  설명 입력창
                         if (showDescription)
-                          TextField(
-                            controller: descController,
-                            style: TextStyle(fontSize: 14),
-                            decoration: InputDecoration(
-                              hintText: "세부정보 추가",
-                              hintStyle: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
+                          // 세부정보추가 줄바꿈하려 익스펜디드로 감쌌는데 전체화면됨. 컨터이너로 감싸줘야하나/ 엔터눌러도 다음으로 그냥 키보드창이내려감,
+                          SizedBox(
+                            height: 200,
+                            child: TextField(
+                              textInputAction: TextInputAction
+                                  .newline, // 엔터치면 다음줄로 가야하는데 왜ㅏㄴ가지
+                              controller: descController,
+                              style: TextStyle(fontSize: 14),
+                              decoration: InputDecoration(
+                                hintText: "세부정보 추가",
+                                hintStyle: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                                border: InputBorder.none,
                               ),
-                              border: InputBorder.none,
                             ),
                           ),
                       ],

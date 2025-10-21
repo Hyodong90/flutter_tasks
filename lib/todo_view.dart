@@ -15,17 +15,6 @@ class ToDoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(children: [Container(
-        child: Column(
-          toDo.title
-        ),
-      )
-        
-      
-        
-        ]
-      ),
-    );
+    return Scaffold(body: ListView(children: [Container()]));
   }
 }
