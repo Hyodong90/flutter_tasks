@@ -2,12 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tasks/homepage.dart';
 import 'package:flutter_tasks/main.dart';
 
-class TodoDetailPage extends StatelessWidget {
+class TodoDetailPage extends StatefulWidget {
   final ToDoEntity todo;
   const TodoDetailPage({super.key, required this.todo});
 
   @override
-  Widget build(Object context) {
+  State<TodoDetailPage> createState() => _TodoDetailPageState();
+}
+
+class _TodoDetailPageState extends State<TodoDetailPage> {
+  final TextEditingController destitleController = TextEditingController();
+  final TextEditingController desdescController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    destitleController.text = widget.todo.title;
+    desdescController.text = widget.todo.description ?? '세부 내용은 다음과 같습니다.';
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[400],
       appBar: AppBar(
@@ -15,8 +31,8 @@ class TodoDetailPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(
-              todo.isFavorite ? Icons.star : Icons.star_border,
-              color: todo.isFavorite ? Colors.amber : Colors.grey,
+              widget.todo.isFavorite ? Icons.star : Icons.star_border,
+              color: widget.todo.isFavorite ? Colors.amber : Colors.grey,
             ),
             onPressed: () {},
           ),
@@ -28,8 +44,10 @@ class TodoDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              todo.title,
+            TextField(
+              controller: destitleController,
+              decoration: InputDecoration(border: InputBorder.none),
+
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
@@ -37,7 +55,16 @@ class TodoDetailPage extends StatelessWidget {
               children: [
                 Icon(Icons.short_text_rounded),
                 SizedBox(width: 12),
-                Text(todo.description ?? '세부 내용은 다음과 같습니다.'),
+                Expanded(
+                  child: TextField(
+                    controller: desdescController,
+                    style: TextStyle(fontSize: 14),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: "세부 내용은 다음과 같습니다.",
+                    ),
+                  ),
+                ),
               ],
             ),
             Padding(
