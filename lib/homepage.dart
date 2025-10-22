@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+
       appBar: AppBar(
         title: Text(
           "효동's tasks",
@@ -186,8 +187,12 @@ class _HomePageState extends State<HomePage> {
                                 "저장",
                                 style: TextStyle(
                                   color: titleController.text.trim().isEmpty
-                                      ? Colors.grey
-                                      : Colors.black,
+                                      ? Theme.of(
+                                          context,
+                                        ).textTheme.bodyMedium?.color
+                                      : Theme.of(
+                                          context,
+                                        ).textTheme.bodyLarge?.color,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -242,9 +247,8 @@ class _HomePageState extends State<HomePage> {
         height: 50,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -269,6 +273,7 @@ class _HomePageState extends State<HomePage> {
             Text(
               todo.title,
               style: TextStyle(
+                color: Theme.of(context).textTheme.bodyLarge?.color,
                 decoration: todo.isDone
                     ? TextDecoration.lineThrough
                     : TextDecoration.none,
