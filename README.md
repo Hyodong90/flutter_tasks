@@ -1,16 +1,22 @@
 # flutter_tasks
 
-A new Flutter project.
+깔끔한 **할 일 관리(ToDO)** 앱 입니다.
+창업반 8기 개인과제 - TO DO APP UI 만들기
 
-## Getting Started
+## 주요기능
 
-This project is a starting point for a Flutter application.
+**할 일 추가** - 제목과 상세내용을 입력해 새로운 할일 등록
+**즐겨찾기** - 자주 사용하는 할일을 즐겨찾기 아이콘으로 등록
+**상세정보 추가** - 할일마다 별도의 상세내용 작성가능
+**다크모드 지원** - 라이트/다크 테마 자동전환 
 
-A few resources to get you started if this is your first Flutter project:
+## 앱 미리보기
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![ToDo](assets/5.png) ![Dark](assets/4.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 개발자 정보
+
+김효동 / 90년생 / 초보 개발자
+
+
+

@@ -117,129 +117,136 @@ class _HomePageState extends State<HomePage> {
             builder: (context) {
               return StatefulBuilder(
                 builder: (context, setModalState) {
-                  return Padding(
-                    padding: EdgeInsets.only(
-                      top: 12,
-                      left: 20,
-                      right: 20,
-                      bottom: MediaQuery.of(context).viewInsets.bottom,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        //  제목 입력 필드
-                        TextField(
-                          controller: titleController,
-                          maxLines: 1,
-                          style: TextStyle(fontSize: 14),
-                          onChanged: (value) =>
-                              setModalState(() {}), //입력 시 버튼 상태 갱신
-                          onSubmitted: (value) {
-                            if (value.trim().isNotEmpty) saveToDo();
-                          },
-                          autofocus: true,
-                          textInputAction: TextInputAction.done, //엔터 누를시 저장
-                          decoration: InputDecoration(
-                            hintText: "새 할 일",
-                            border: InputBorder.none,
-                          ),
-                        ),
+                  return Container(
+                    color: Theme.of(context).cardTheme.color,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: 12,
+                        left: 20,
+                        right: 20,
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                      ),
 
-                        Row(
-                          children: [
-                            // if를 써야 한번은 실행됨. 세부사항이 트루일때
-                            if (!showDescription)
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          //  제목 입력 필드
+                          TextField(
+                            controller: titleController,
+                            maxLines: 1,
+
+                            style: TextStyle(fontSize: 14),
+                            onChanged: (value) =>
+                                setModalState(() {}), //입력 시 버튼 상태 갱신
+                            onSubmitted: (value) {
+                              if (value.trim().isNotEmpty) saveToDo();
+                            },
+                            autofocus: true,
+                            textInputAction: TextInputAction.done, //엔터 누를시 저장
+                            decoration: InputDecoration(
+                              hintText: "새 할 일",
+                              border: InputBorder.none,
+                            ),
+                          ),
+
+                          Row(
+                            children: [
+                              // if를 써야 한번은 실행됨. 세부사항이 트루일때
+                              if (!showDescription)
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.short_text_rounded,
+                                    color: showDescription
+                                        ? Colors.black
+                                        : Colors.grey,
+                                  ),
+                                  onPressed: () {
+                                    setModalState(() {
+                                      showDescription = !showDescription;
+                                    });
+                                  },
+                                ),
                               IconButton(
                                 icon: Icon(
-                                  Icons.short_text_rounded,
-                                  color: showDescription
-                                      ? Colors.black
+                                  isFavorite ? Icons.star : Icons.star_border,
+                                  color: isFavorite
+                                      ? Colors.amber
                                       : Colors.grey,
                                 ),
                                 onPressed: () {
                                   setModalState(() {
-                                    showDescription = !showDescription;
+                                    isFavorite = !isFavorite;
                                   });
                                 },
                               ),
-                            IconButton(
-                              icon: Icon(
-                                isFavorite ? Icons.star : Icons.star_border,
-                                color: isFavorite ? Colors.amber : Colors.grey,
-                              ),
-                              onPressed: () {
-                                setModalState(() {
-                                  isFavorite = !isFavorite;
-                                });
-                              },
-                            ),
-                            Spacer(),
-                            TextButton(
-                              // 내용없이 저장눌렀을때 비활성화말고 스낵바 출력
-                              //
-                              onPressed: () {
-                                if (titleController.text.trim().isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      backgroundColor: Colors.red,
-                                      content: Text(
-                                        "할일을 입력하세요.",
-                                        style: TextStyle(color: Colors.white),
+                              Spacer(),
+                              TextButton(
+                                // 내용없이 저장눌렀을때 비활성화말고 스낵바 출력
+                                //
+                                onPressed: () {
+                                  if (titleController.text.trim().isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: Colors.red,
+                                        content: Text(
+                                          "할일을 입력하세요.",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        behavior: SnackBarBehavior
+                                            .floating, // 플로팅 모드해서 마진을 줘야 띄울수 있음.
+                                        margin: EdgeInsets.only(
+                                          bottom: 20,
+                                          left: 20,
+                                          right: 20,
+                                        ),
+                                        duration: Duration(
+                                          seconds: 2,
+                                        ), // 2초 있다가 사라짐 듀레이션안하면 5초정도 기다려야하는듯
                                       ),
-                                      behavior: SnackBarBehavior
-                                          .floating, // 플로팅 모드해서 마진을 줘야 띄울수 있음.
-                                      margin: EdgeInsets.only(
-                                        bottom: 20,
-                                        left: 20,
-                                        right: 20,
-                                      ),
-                                      duration: Duration(
-                                        seconds: 2,
-                                      ), // 2초 있다가 사라짐 듀레이션안하면 5초정도 기다려야하는듯
-                                    ),
-                                  );
-                                  Navigator.pop(context);
-                                } else {
-                                  saveToDo();
-                                }
-                              },
+                                    );
+                                    Navigator.pop(context);
+                                  } else {
+                                    saveToDo();
+                                  }
+                                },
 
-                              child: Text(
-                                "저장",
-                                style: TextStyle(
-                                  color: titleController.text.trim().isEmpty
-                                      ? Theme.of(
-                                          context,
-                                        ).textTheme.bodyMedium?.color
-                                      : Theme.of(
-                                          context,
-                                        ).textTheme.bodyLarge?.color,
-                                  fontWeight: FontWeight.bold,
+                                child: Text(
+                                  "저장",
+                                  style: TextStyle(
+                                    color: titleController.text.trim().isEmpty
+                                        ? Theme.of(
+                                            context,
+                                          ).textTheme.bodyMedium?.color
+                                        : Theme.of(
+                                            context,
+                                          ).textTheme.bodyLarge?.color,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-
-                        //  설명 입력창
-                        if (showDescription)
-                          Expanded(
-                            child: TextField(
-                              maxLines: null, //맥스라인을 널 하니 엔터로 다음 줄 가짐.
-                              keyboardType: TextInputType.multiline,
-                              controller: descController,
-                              style: TextStyle(fontSize: 14),
-                              decoration: InputDecoration(
-                                hintText: "세부정보 추가",
-                                hintStyle: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                                border: InputBorder.none,
-                              ),
-                            ),
+                            ],
                           ),
-                      ],
+
+                          //  설명 입력창
+                          if (showDescription)
+                            Expanded(
+                              child: TextField(
+                                maxLines: null, //맥스라인을 널 하니 엔터로 다음 줄 가짐.
+                                keyboardType: TextInputType.multiline,
+                                controller: descController,
+                                style: TextStyle(fontSize: 14),
+                                decoration: InputDecoration(
+                                  hintText: "세부정보 추가",
+                                  hintStyle: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey,
+                                  ),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   );
                 },
