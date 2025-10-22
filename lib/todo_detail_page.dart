@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tasks/homepage.dart';
 import 'package:flutter_tasks/main.dart';
 
+//스테이트풀위젯
 class TodoDetailPage extends StatefulWidget {
   final ToDoEntity todo;
   const TodoDetailPage({super.key, required this.todo});
@@ -10,6 +11,7 @@ class TodoDetailPage extends StatefulWidget {
   State<TodoDetailPage> createState() => _TodoDetailPageState();
 }
 
+//컨트롤러 만들어서 텍스트창 사용할수 있게하기
 class _TodoDetailPageState extends State<TodoDetailPage> {
   final TextEditingController destitleController = TextEditingController();
   final TextEditingController desdescController = TextEditingController();
@@ -18,6 +20,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
   void initState() {
     super.initState();
 
+    //타이틀이랑 상세내역 불러올 수 있도록 함수화
     destitleController.text = widget.todo.title;
     desdescController.text = widget.todo.description ?? '세부 내용은 다음과 같습니다.';
   }
@@ -27,7 +30,9 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
+        // 리딩은 앱바에 왼쪽
         leading: BackButton(),
+        // 액션즈는 앱바에 오른쪽에 위치
         actions: [
           IconButton(
             icon: Icon(
@@ -45,6 +50,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
+              //수저주정
               controller: destitleController,
               decoration: InputDecoration(border: InputBorder.none),
 
