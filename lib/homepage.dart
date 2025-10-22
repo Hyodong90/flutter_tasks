@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tasks/todo_detail_page.dart';
 import 'package:flutter_tasks/todo_view.dart';
 
-//일단 만듬
+//클래스 생성해 함수 사용하도록 함
 class ToDoEntity {
   ToDoEntity(this.title, this.description, this.isDone, this.isFavorite);
 
@@ -12,6 +12,7 @@ class ToDoEntity {
   final bool isDone;
 }
 
+// 타이틀, 상세설명, 즐겨찾기, 할일 등 변해야 하니 스테이트풀위젯으로,
 class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
@@ -28,7 +29,7 @@ class _HomePageState extends State<HomePage> {
   // 작성한거 리스트로 받아놓기
   List<ToDoEntity> todolist = [];
 
-  //할일 쓰고 세이브 함수
+  //할일 쓰고 세이브 함수로 저장하기
   void saveToDo() {
     final title = titleController.text.trim();
     final desc = descController.text.trim();
@@ -56,7 +57,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-
       appBar: AppBar(
         title: Text(
           "효동's tasks",
@@ -102,6 +102,7 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               )
+            //리스트 뷰를 쓰면 안됨. 빌더까지써서 인덱스값을 구해오기
             : ListView.builder(
                 itemCount: todolist.length,
                 itemBuilder: (context, index) {
@@ -110,6 +111,7 @@ class _HomePageState extends State<HomePage> {
               ),
       ),
 
+      // 플로팅액션버튼으로 할일 추가하기
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
@@ -134,10 +136,10 @@ class _HomePageState extends State<HomePage> {
                           TextField(
                             controller: titleController,
                             maxLines: 1,
-
                             style: TextStyle(fontSize: 14),
                             onChanged: (value) =>
-                                setModalState(() {}), //입력 시 버튼 상태 갱신
+                                setModalState(() {}), //입력 시 버튼 상태 변하게
+                            //텍스트필드 콜백 함수. 엔터를 누르면 value에 작성한값이 들어가고 저장됨
                             onSubmitted: (value) {
                               if (value.trim().isNotEmpty) saveToDo();
                             },
@@ -151,7 +153,7 @@ class _HomePageState extends State<HomePage> {
 
                           Row(
                             children: [
-                              // if를 써야 한번은 실행됨. 세부사항이 트루일때
+                              // if를 써야 한번은 실행됨. 세부사항이 트루일때 삼항연산자쓰면 바로 넘어가서 안됨!!
                               if (!showDescription)
                                 IconButton(
                                   icon: Icon(
@@ -182,7 +184,6 @@ class _HomePageState extends State<HomePage> {
                               Spacer(),
                               TextButton(
                                 // 내용없이 저장눌렀을때 비활성화말고 스낵바 출력
-                                //
                                 onPressed: () {
                                   if (titleController.text.trim().isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
@@ -209,7 +210,7 @@ class _HomePageState extends State<HomePage> {
                                     saveToDo();
                                   }
                                 },
-
+                                //저장 글씨 - 내용이 있을때 색이 진해지게
                                 child: Text(
                                   "저장",
                                   style: TextStyle(
@@ -232,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                             Expanded(
                               child: TextField(
                                 maxLines: null, //맥스라인을 널 하니 엔터로 다음 줄 가짐.
-                                keyboardType: TextInputType.multiline,
+                                keyboardType: TextInputType.multiline, // 엔터치면 다음줄 가는거
                                 controller: descController,
                                 style: TextStyle(fontSize: 14),
                                 decoration: InputDecoration(
@@ -261,12 +262,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+    //todoItem 으로 따로 뺌. 할일 만들었을때 리스트로 작동하는 것들
   Widget todoItem(ToDoEntity todo) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => TodoDetailPage(todo: todo)),
+          MaterialPageRoute(builder: (context) => TodoDetailPage(todo: todo)),  // 할일 누르면 상세내역으로 가기
         );
       },
       child: Container(
@@ -281,6 +283,7 @@ class _HomePageState extends State<HomePage> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // 완료 버튼 눌러서 변경 가능하도록.
             IconButton(
               onPressed: () {
                 setState(() {
@@ -302,6 +305,7 @@ class _HomePageState extends State<HomePage> {
               todo.title,
               style: TextStyle(
                 color: Theme.of(context).textTheme.bodyLarge?.color,
+                //완료 버튼으로 타이틀에 줄이 그어지며 같이 움직이도록 삼항연산자
                 decoration: todo.isDone
                     ? TextDecoration.lineThrough
                     : TextDecoration.none,

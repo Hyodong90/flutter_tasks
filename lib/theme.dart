@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+
+//라이트테마 지정
 final lightTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: Colors.black,
@@ -13,6 +15,7 @@ final lightTheme = ThemeData(
   ),
 );
 
+//다크테마 지정
 final darkTheme = ThemeData(
   colorScheme: ColorScheme.fromSeed(
     seedColor: Colors.white,
