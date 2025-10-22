@@ -233,7 +233,8 @@ class _HomePageState extends State<HomePage> {
                             Expanded(
                               child: TextField(
                                 maxLines: null, //맥스라인을 널 하니 엔터로 다음 줄 가짐.
-                                keyboardType: TextInputType.multiline, // 엔터치면 다음줄 가는거
+                                keyboardType:
+                                    TextInputType.multiline, // 엔터치면 다음줄 가는거
                                 controller: descController,
                                 style: TextStyle(fontSize: 14),
                                 decoration: InputDecoration(
@@ -262,13 +263,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-    //todoItem 으로 따로 뺌. 할일 만들었을때 리스트로 작동하는 것들
+  //todoItem 으로 따로 뺌. 할일 만들었을때 리스트로 작동하는 것들
   Widget todoItem(ToDoEntity todo) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => TodoDetailPage(todo: todo)),  // 할일 누르면 상세내역으로 가기
+          MaterialPageRoute(
+            builder: (context) => TodoDetailPage(todo: todo),
+          ), // 할일 누르면 상세내역으로 가기
         );
       },
       child: Container(
@@ -287,6 +290,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               onPressed: () {
                 setState(() {
+                  //투두리스트에 인덱스 값 뽑아 올수있도록
                   int index = todolist.indexOf(todo);
                   todolist[index] = ToDoEntity(
                     todo.title,
@@ -315,6 +319,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
               onPressed: () {
                 setState(() {
+                  //투두리스트 인덱스값 뽑아와서 색 바뀌게 하기
                   int index = todolist.indexOf(todo);
                   todolist[index] = ToDoEntity(
                     todo.title,

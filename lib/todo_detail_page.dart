@@ -4,6 +4,7 @@ import 'package:flutter_tasks/main.dart';
 
 //스테이트풀위젯
 class TodoDetailPage extends StatefulWidget {
+  //ToDoEnity를 가져와서 함수로 사용할 수 있게함. 아직 함수 잘모름.ㅠㅠ
   final ToDoEntity todo;
   const TodoDetailPage({super.key, required this.todo});
 
@@ -50,7 +51,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
-              //수저주정
+              //타이틀 컨드롤러로 타이틀 적어논거 수정할 수 있게함
               controller: destitleController,
               decoration: InputDecoration(border: InputBorder.none),
 
@@ -63,6 +64,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
                 SizedBox(width: 12),
                 Expanded(
                   child: TextField(
+                    //상세정보 컨드롤러로 상세정보 적어논거 수정할 수 있게함
                     controller: desdescController,
                     style: TextStyle(fontSize: 14),
                     decoration: InputDecoration(
