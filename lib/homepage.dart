@@ -18,6 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //텍스트 쓰게하는 컨드롤러
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descController = TextEditingController();
 
@@ -40,9 +41,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       todolist.add(todo);
     });
-    print(
-      " 저장됨: ${todo.title}, 설명: ${todo.description}, 즐겨찾기: ${todo.isFavorite}",
-    );
 
     // 입력 초기화
     titleController.clear();
@@ -52,12 +50,6 @@ class _HomePageState extends State<HomePage> {
 
     Navigator.pop(context); // 창 닫기
   }
-
-  // onToggleFavorite(ToDoEntity todo) {
-  //   todolist.indexOf();
-  // }
-
-  // onToggleDone() {}
 
   @override
   Widget build(BuildContext context) {
@@ -94,12 +86,17 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
+                        color: Colors.black54,
                       ),
                     ),
                     SizedBox(height: 12),
                     Text(
                       "할 일을 추가하고 Title 에서 \n 할 일을 추적하세요.",
-                      style: TextStyle(fontSize: 14, height: 1.5),
+                      style: TextStyle(
+                        fontSize: 14,
+                        height: 1.5,
+                        color: Colors.black54,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -178,11 +175,35 @@ class _HomePageState extends State<HomePage> {
                             ),
                             Spacer(),
                             TextButton(
-                              onPressed: titleController.text.trim().isEmpty
-                                  ? null
-                                  : () {
-                                      saveToDo();
-                                    },
+                              // 내용없이 저장눌렀을때 비활성화말고 스낵바 출력
+                              //
+                              onPressed: () {
+                                if (titleController.text.trim().isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Colors.red,
+                                      content: Text(
+                                        "할일을 입력하세요.",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      behavior: SnackBarBehavior
+                                          .floating, // 플로팅 모드해서 마진을 줘야 띄울수 있음.
+                                      margin: EdgeInsets.only(
+                                        bottom: 20,
+                                        left: 20,
+                                        right: 20,
+                                      ),
+                                      duration: Duration(
+                                        seconds: 2,
+                                      ), // 2초 있다가 사라짐 듀레이션안하면 5초정도 기다려야하는듯
+                                    ),
+                                  );
+                                  Navigator.pop(context);
+                                } else {
+                                  saveToDo();
+                                }
+                              },
+
                               child: Text(
                                 "저장",
                                 style: TextStyle(
