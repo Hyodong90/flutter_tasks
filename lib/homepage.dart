@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tasks/todo_detail_page.dart';
-import 'package:flutter_tasks/todo_view.dart';
 
 //클래스 생성해 함수 사용하도록 함
 class ToDoEntity {

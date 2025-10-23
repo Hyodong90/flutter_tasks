@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tasks/homepage.dart';
-import 'package:flutter_tasks/main.dart';
 
 //스테이트풀위젯
 class TodoDetailPage extends StatefulWidget {
@@ -74,7 +73,7 @@ class _TodoDetailPageState extends State<TodoDetailPage> {
                   ),
                 ),
               ],
-            ),//////////
+            ), //////////
             Padding(
               padding: const EdgeInsets.only(left: 35),
               child: TextField(
